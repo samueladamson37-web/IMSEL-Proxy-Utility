@@ -23,7 +23,7 @@ https://<front-domain>/<path>/<token>#<name>?resolve-address=<front-domain>&host
 Первый URL без метки, последующие — с метками `url:N=`, в конце `fallback-url=`:
 
 ```text
-https://gmail.com/runrun1/token#rahima?resolve-address=gmail.com&host=storage.googleapis.com|url:1=https://www.google.com/runrun1/token#rahima?resolve-address=www.google.com&host=storage.googleapis.com|url:2=https://fcm.googleapis.com/runrun1/token#rahima?resolve-address=fcm.googleapis.com&host=storage.googleapis.com|fallback-url=https://backup.example.com/token
+https://gmail.com/subpath/token#MySub?resolve-address=gmail.com&host=storage.googleapis.com|url:1=https://www.google.com/subpath/token#MySub?resolve-address=www.google.com&host=storage.googleapis.com|url:2=https://fcm.googleapis.com/subpath/token#MySub?resolve-address=fcm.googleapis.com&host=storage.googleapis.com|fallback-url=https://backup.example.com/token
 ```
 
 Клиент пробует зеркала по порядку: `gmail.com` → `www.google.com` → `fcm.googleapis.com`. Каждый резолвится отдельно, соединение идёт на IP соответствующего фронта, Host-заголовок всегда `storage.googleapis.com`. Если все три недоступны — используется `fallback-url`. Тот же список без меток (просто через `|`) тоже работает.
@@ -33,13 +33,13 @@ https://gmail.com/runrun1/token#rahima?resolve-address=gmail.com&host=storage.go
 Команды управления ([app-management.md](app-management.md)) работают с фронтинг-зеркалами через помеченные позиции: первый URL — позиция `0`, `url:1` — второй, `url:N` — позиция `N`:
 
 ```http
-new-url: https://drive.google.com/runrun1/token#rahima?resolve-address=drive.google.com&host=storage.googleapis.com
-new-url-1: https://www.google.com/runrun1/token#rahima?resolve-address=www.google.com&host=storage.googleapis.com
+new-url: https://drive.google.com/subpath/token#MySub?resolve-address=drive.google.com&host=storage.googleapis.com
+new-url-1: https://www.google.com/subpath/token#MySub?resolve-address=www.google.com&host=storage.googleapis.com
 new-url-1: resolve-address=142.251.41.165
 new-url-1: host=storage.googleapis.com
 new-domain: drive.google.com
 new-url-2: 0
-fallback-url: https://fcm.googleapis.com/runrun1/token#rahima?resolve-address=fcm.googleapis.com&host=storage.googleapis.com
+fallback-url: https://fcm.googleapis.com/subpath/token#MySub?resolve-address=fcm.googleapis.com&host=storage.googleapis.com
 ```
 
 - `new-url` — заменить **только первый URL** (позиция 0);
