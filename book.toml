@@ -1,0 +1,11 @@
+[book]
+title = "IMSEL Proxy Utility"
+authors = ["Samuel Adamson"]
+src = "."
+language = "ru"
+
+[build]
+build-dir = "public"
+
+[output.html]
+no-section-label = false
