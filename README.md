@@ -1,6 +1,6 @@
 # IMSEL VPN
 
-> Документация: <https://gitlab-docs.imsel.dev> · Privacy Policy: <https://gitlab-docs.imsel.dev/privacy-policy.html> · Terms of Service: <https://gitlab-docs.imsel.dev/terms-of-service.html>
+> [![GitLab Docs](https://img.shields.io/badge/GitLab-Документация-FC6D26?logo=gitlab&style=flat-square)](https://gitlab-docs.imsel.dev) [![GitBook Privacy](https://img.shields.io/badge/GitBook-Privacy_Policy-3884FF?logo=gitbook&style=flat-square)](https://gitlab-docs.imsel.dev/privacy-policy.html) [![GitHub Terms](https://img.shields.io/badge/GitHub-Terms_of_Service-181717?logo=github&style=flat-square)](https://gitlab-docs.imsel.dev/terms-of-service.html)
 
 | iOS | Android | Desktop |
 | --- | --- | --- |
