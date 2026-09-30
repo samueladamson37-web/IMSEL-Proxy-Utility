@@ -25,15 +25,15 @@
 
 ```http
 HTTP/1.1 200 OK
-profile-title: Мой VPN
-profile-update-interval: 6
+profile-title: IMSEL Node
+profile-update-interval: 12
 ```
 
 **2. Строка в теле подписки (fallback):**
 
 ```text
-#profile-title: Мой VPN
-#profile-update-interval: 6
+#profile-title: IMSEL Node
+#profile-update-interval: 12
 vless://...
 ```
 
@@ -53,8 +53,8 @@ vless://...
 ### Имя подписки
 
 ```http
-profile-title: Мой VPN
-profile-title: base64:0JzQvtC5INCy0YHQsNC5
+profile-title: IMSEL Node
+profile-title: base64:SU1TRUwgTm9kZQ==
 ```
 
 До 25 символов (обрезается). В base64-варианте первая строка — имя, остальные — описание. Альтернативные заголовки: `subscription-name`, `content-disposition` (также распознаётся из заголовка-строки).
@@ -62,8 +62,8 @@ profile-title: base64:0JzQvtC5INCy0YHQsNC5
 ### Описание подписки
 
 ```http
-profile-description: Быстрые серверы в Европе
-profile-description: base64:0JHRgtC40L/QsNGG0LjRjw==
+profile-description: Премиум сервера IMSEL
+profile-description: base64:0J/RgNC10LzQuNGF0Lwg0YHQtdGA0LLQtdGA0LAgSU1TRUw=
 ```
 
 Показывается мелким текстом в шапке карточки. Имеет приоритет над описанием из base64-`profile-title`.
@@ -87,9 +87,9 @@ profile-update-interval: 6
 ### Ссылки
 
 ```http
-support-url: https://t.me/your_support_bot
-profile-web-page-url: https://your-site.com
-premium-url: https://example.com/pricing
+support-url: https://t.me/imsel_support
+profile-web-page-url: https://imsel.dev
+premium-url: https://imsel.dev/premium
 ```
 
 Кнопки в карточке подписки: поддержка (✈), веб-страница (ℹ), «Премиум» (★, только при наличии `premium-url`).
@@ -98,7 +98,7 @@ premium-url: https://example.com/pricing
 
 ```http
 announce: [текст | base64:...]
-announce-url: https://example.com/news.txt
+announce-url: https://imsel.dev/announcement.txt
 ```
 
 Текст объявления (до 200 символов, обрезается с «…») в рамке в карточке. `announce` (текст напрямую) имеет приоритет над `announce-url`: клиент скачивает текст по ссылке (тело — plain или `base64:...`, тот же таймаут и User-Agent, ошибки молча игнорируются). Устаревший `sub-info` (текст) работает как alias `announce`.
@@ -118,10 +118,10 @@ subscriptions-sort-type: [without | ping | alphabet]
 Первый URL — без метки, каждый следующий — с меткой `url:N=`, в конце может стоять `fallback-url=`:
 
 ```text
-https://gmail.com/sub/token#m1?resolve-address=gmail.com&host=storage.googleapis.com
-  |url:1=https://www.google.com/sub/token#m2?resolve-address=www.google.com&host=storage.googleapis.com
-  |url:2=https://fcm.googleapis.com/sub/token#m3?resolve-address=fcm.googleapis.com&host=storage.googleapis.com
-  |fallback-url=https://backup.example.com/token
+https://cdn.imsel.dev/sub/token#m1?resolve-address=cdn.imsel.dev&host=backend.imsel-api.com
+  |url:1=https://fallback.imsel.dev/sub/token#m2?resolve-address=fallback.imsel.dev&host=backend.imsel-api.com
+  |url:2=https://route.imsel.dev/sub/token#m3?resolve-address=route.imsel.dev&host=backend.imsel-api.com
+  |fallback-url=https://backup.imsel.dev/token
 ```
 
 - **Позиции:** первый URL = позиция `0`, `url:1` = второй URL (позиция `1`), `url:N` = позиция `N`. Диапазон меток: 0–99.
@@ -139,19 +139,19 @@ https://gmail.com/sub/token#m1?resolve-address=gmail.com&host=storage.googleapis
 Три режима работы по значению:
 
 ```http
-new-url: https://new-first.com/token
+new-url: https://node1.imsel.dev/token
 ```
 
 Одиночный URL — замена **только первого зеркала** (позиция 0), остальные не трогаются.
 
 ```http
-new-url: https://a.com/token|https://b.com/token|https://c.com/token
+new-url: https://a.imsel.dev/token|https://b.imsel.dev/token|https://c.imsel.dev/token
 ```
 
 Несколько plain URL без меток — полная замена списка (легаси-режим).
 
 ```http
-new-url: https://first.com/t|url:1=https://second.com/t|fallback-url=https://fb.com/t
+new-url: https://primary.imsel.dev/t|url:1=https://secondary.imsel.dev/t|fallback-url=https://reserve.imsel.dev/t
 ```
 
 Помеченная структура — точечно по позициям: упомянутые позиции заменяются, `fallback-url=` записывается в поле запасного адреса, **неупомянутые зеркала не меняются**. Все URL проходят валидацию схемы; невалидные части отбрасываются.
@@ -164,11 +164,11 @@ new-url: https://first.com/t|url:1=https://second.com/t|fallback-url=https://fb.
 
 | Команда | Действие |
 | --- | --- |
-| `new-url-1: https://drive.google.com/tok#m?resolve-address=drive.google.com&host=storage.googleapis.com` | заменить зеркало `url:1` целиком |
-| `new-url-3: https://append.com/token` | N = количество зеркал → добавить в конец |
+| `new-url-1: https://mirror.imsel.dev/tok#m?resolve-address=mirror.imsel.dev&host=backend.imsel-api.com` | заменить зеркало `url:1` целиком |
+| `new-url-3: https://append.imsel.dev/token` | N = количество зеркал → добавить в конец |
 | `new-url-1: 0` (или `false`) | удалить зеркало `url:1` |
-| `new-url-1: resolve-address=142.251.41.165` | точечно заменить только `resolve-address` — домен **или IP-адрес** |
-| `new-url-0: host=storage.googleapis.com` | точечно заменить только `host` (Host-заголовок фронтинга) |
+| `new-url-1: resolve-address=198.51.100.15` | точечно заменить только `resolve-address` — домен **или IP-адрес** |
+| `new-url-0: host=backend.imsel-api.com` | точечно заменить только `host` (Host-заголовок фронтинга) |
 
 Правила:
 
@@ -180,9 +180,9 @@ new-url: https://first.com/t|url:1=https://second.com/t|fallback-url=https://fb.
 ### Смена домена (new-domain)
 
 ```http
-new-domain: new-domain.com
-new-domain-1: drive.google.com
-new-domain: 1=drive.google.com
+new-domain: new-api.imsel.dev
+new-domain-1: mirror.imsel.dev
+new-domain: 1=mirror.imsel.dev
 ```
 
 `new-domain` — домен (host) во **всех** зеркалах; `new-domain-N` / колон-форма — только у зеркала на позиции N. Путь, query и фрагмент сохраняются.
@@ -192,8 +192,8 @@ new-domain: 1=drive.google.com
 ### Запасные адреса (fallback-url)
 
 ```http
-fallback-url: https://backup-domain.com/token
-fallback-url: https://f1.com/token#m?resolve-address=f1.com&host=storage.googleapis.com|https://f2.com/token
+fallback-url: https://standby.imsel.dev/token
+fallback-url: https://f1.imsel.dev/token#m?resolve-address=f1.imsel.dev&host=backend.imsel-api.com|https://f2.imsel.dev/token
 ```
 
 Пробуются **по очереди после отказа всех зеркал** (HTTP 300–599 или таймаут; таймаут — персональный настройки подписки либо глобальная, 5–15 с). Несколько URL через `|`/`\n`; фронтинг-URL разрешены. Встроенный `fallback-url=` в конце помеченного списка имеет тот же эффект и пробуется первым. Fallback не заменяет список зеркал.
@@ -243,8 +243,8 @@ vless://uuid@server:443#user1 [server-setting-hide-false]
 
 Клиент детально сообщает о попытках:
 
-- **Всё упало** — красное уведомление с полной сводкой: `Ошибка: не удалось загрузить подписку. Попытки: зеркало 1 (gmail.com): HTTP 502; зеркало 2 (www.google.com): таймаут 15 с; запасной URL (backup.com): HTTP 404.` Для тотального таймаута добавляется подсказка увеличить таймаут.
-- **Успех через отказоустойчивость** — предупреждение: `Подписка обновлена через запасной URL. Недоступны: зеркало 1 (gmail.com): таймаут 15 с` или `Подписка обновлена (не все зеркала доступны: …)`.
+- **Всё упало** — красное уведомление с полной сводкой: `Ошибка: не удалось загрузить подписку. Попытки: зеркало 1 (cdn.imsel.dev): HTTP 502; зеркало 2 (fallback.imsel.dev): таймаут 15 с; запасной URL (backup.imsel.dev): HTTP 404.` Для тотального таймаута добавляется подсказка увеличить таймаут.
+- **Успех через отказоустойчивость** — предупреждение: `Подписка обновлена через запасной URL. Недоступны: зеркало 1 (cdn.imsel.dev): таймаут 15 с` или `Подписка обновлена (не все зеркала доступны: …)`.
 - Чистый успех — без уведомлений (только top-баннер прогресса).
 
 ---
@@ -257,7 +257,7 @@ vless://uuid@server:443#user1 [server-setting-hide-false]
 sub-info-color: red
 sub-info-text: Продлите подписку со скидкой
 sub-info-button-text: Купить
-sub-info-button-link: https://example.com/buy
+sub-info-button-link: https://imsel.dev/buy
 ```
 
 Цветной баннер в карточке. Цвет: `red` / `blue` / `green` (default `blue`; неизвестные значения → blue). Текст — до 200 символов (обрезается с «…»), кнопка — до 25. Кнопка не показывается без ссылки. Отключение: `sub-info-text: 0`. Блок скрывается, пока активен баннер истечения (см. ниже).
@@ -266,7 +266,7 @@ sub-info-button-link: https://example.com/buy
 
 ```http
 sub-expire: 1
-sub-expire-button-link: https://example.com/renew
+sub-expire-button-link: https://imsel.dev/renew
 ```
 
 Системный баннер по `expireDate` из `subscription-userinfo`: за ≤ 3 дней — «Ваша подписка заканчивается через N д.» (или «…сегодня»), после истечения — «Подписка закончилась!». Кнопка «Продлить» открывает ссылку. Имеет приоритет над sub-info-блоком.
@@ -311,8 +311,8 @@ noises-delay: 10-50
 
 ```http
 server-address-resolve-enable: 1
-server-address-resolve-dns-domain: https://common.dot.dns.yandex.net/dns-query
-server-address-resolve-dns-ip: 77.88.8.8
+server-address-resolve-dns-domain: https://cloudflare-dns.com/dns-query
+server-address-resolve-dns-ip: 1.1.1.1
 ```
 
 Перед подключением домен сервера резолвится через DNS-over-HTTPS (JSON API, A-записи):
@@ -453,7 +453,7 @@ no-limit-enabled: 1
 Подпись под именем сервера (вместо технического тега «VLESS / WS / TLS»). Добавляется в фрагмент share-ссылки после имени:
 
 ```text
-vless://uuid@server:443#Сервер1?serverDescription=0J/RgNC40LzQtdGA
+vless://uuid@server:443#IMSEL-Node?serverDescription=SVB2NiBPbmx5
 ```
 
 Значение — base64 (при невозможности декодирования принимается как plain text). Рекомендуемая длина — до 30 символов. Поддерживается во всех форматах ссылок (vless/vmess/trojan/ss/socks/wireguard/hysteria2) и в JSON-подписках через поле `meta.serverDescription`.
