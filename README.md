@@ -1,32 +1,43 @@
-# Imsel - Utility
+# IMSEL VPN
 
 > Документация: <https://gitlab-docs.imsel.dev> · Privacy Policy: <https://gitlab-docs.imsel.dev/privacy-policy.html> · Terms of Service: <https://gitlab-docs.imsel.dev/terms-of-service.html>
 
-| iOS                                                                        | Android                                                                                                                                                             | Desktop                                                                                                         |
-| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| [App Store-Global] in development() | [Google Play] in development()                                                                                          | [Windows]in development()        |
-| [App Store-Only RU]in development() | [Download APK]in development()/[mirror]in development() | [macOS(arm64/intel)]in development()|
-| [Testflight-Global]in development() | [Download Beta APK]in development()                                                            | [Linux-x64(.deb)]in development() |
-| [Testflight-Only RU]in development())           |                                                                                    | [Linux-arm64(.deb)]in development() |
-|                                                                            |                                                                                                                                                                     | [Linux-x64(.rpm)]in development() |
-|                                                                            |                                                                                                                                                                     | [Linux-arm64(.rpm)]in development() |
-|                                                                            |                                                                                                                                                                     | [ArchLinux-x64(.pkg)]in development() |
-|                                                                            |                                                                                                                                                                     | [ArchLinux-arm64(.pkg)]in development() |
+| iOS | Android | Desktop |
+| --- | --- | --- |
+| [App Store-Global] (в разработке) | [Google Play] (в разработке) | [Windows] (в разработке) |
+| [App Store-Only RU] (в разработке) | [Download APK] / [mirror] (в разработке) | [macOS (arm64/intel)] (в разработке) |
+| [Testflight-Global] (в разработке) | [Download Beta APK] (в разработке) | [Linux-x64 (.deb)] (в разработке) |
+| [Testflight-Only RU] (в разработке) | | [Linux-arm64 (.deb)] (в разработке) |
+| | | [Linux-x64 (.rpm)] (в разработке) |
+| | | [Linux-arm64 (.rpm)] (в разработке) |
+| | | [ArchLinux-x64 (.pkg)] (в разработке) |
+| | | [ArchLinux-arm64 (.pkg)] (в разработке) |
 
-Imsel is a mobile application designed for convenient proxy server management, powered by the robust Xray core. The app features an intuitive interface and a range of useful functions, making it an essential tool for managing connections.
+**IMSEL VPN** — это продвинутый клиент для безопасного и удобного управления прокси-серверами, построенный на базе мощного ядра Xray-core. Приложение создано для того, чтобы дать обычным пользователям интуитивно понятный интерфейс, а провайдерам подписок — максимальный контроль над маршрутизацией и соединениями.
 
-The key features of IMSEL include:
+## Отличия и ключевые преимущества IMSEL
 
-* Configuration of proxy servers based on flexible routing rules.
-* Support for multiple modern protocols, including:
-  * **VLESS (Reality)**
-  * **VMess**
-  * **Trojan**
-  * **Shadowsocks**
-  * **Socks**
+В отличие от большинства стандартных VPN-клиентов, IMSEL не просто пропускает трафик, а предлагает уникальный набор инструментов:
 
-Imsel ensures your network activity remains private by not collecting any data; your information remains solely on your device without being sent to external servers.
+* **Безопасная Offline-раздача подписок:** Делитесь настроенными серверами с другими устройствами напрямую, без участия облачных сервисов. Раздачу можно защитить PIN-кодом, привязать её криптографически к «железу» (HWID) получателя, а также задать таймер автоудаления и запретить использование на Root-устройствах.
+* **Глубокий контроль для провайдеров:** Провайдеры VPN могут дистанционно управлять поведением приложения через HTTP-заголовки. Доступны: горячая смена зеркал подписки (Fallback URL), блокировка просмотра конфигураций (режим «Заблокировано провайдером»), скрытие настроек, управление DoH-резолвом адресов и применение шумовых пакетов (TLS fragmentation).
+* **Раздельное туннелирование (Per-App VPN):** Полный контроль над тем, трафик каких именно приложений направляется через VPN, а каких — идёт напрямую (с поддержкой системных приложений).
+* **Мощная система маршрутизации:** Поддержка импорта готовых профилей маршрутизации (через ссылки `imsel://routing/...`), гибкая работа со списками блокировок (AdBlock), DNS и гео-базами (GeoIP/GeoSite).
 
-It's important to highlight that IMSEL does not provide VPN services for purchase. Users are responsible for acquiring or setting up their own servers. Users should also comply with applicable laws in their jurisdiction when utilizing the app.
+## Поддерживаемые протоколы
 
-To report a problem, use our
+Приложение поддерживает все современные протоколы для надежного обхода сетевых ограничений:
+* **VLESS (включая XTLS Reality)**
+* **VMess**
+* **Trojan**
+* **Shadowsocks**
+* **Socks** / **HTTP**
+
+## Конфиденциальность и безопасность
+
+IMSEL строго соблюдает вашу приватность. Приложение **не собирает личные данные**, не ведёт логи вашей сетевой активности и не отправляет телеметрию на сторонние серверы. Все операции шифрования, разбора профилей и проверок безопасности (включая offline-раздачу) происходят исключительно локально на вашем устройстве.
+
+> **Важно:** IMSEL VPN является инструментом-клиентом и **не предоставляет встроенных платных VPN-услуг или собственных серверов для подключения**. Пользователи должны использовать собственные серверы или приобретать подписки у сторонних провайдеров, соблюдая при этом законодательство своей юрисдикции.
+
+---
+*Чтобы сообщить об ошибке или проблеме, пожалуйста, обратитесь в нашу службу поддержки.*
