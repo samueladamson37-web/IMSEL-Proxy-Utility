@@ -15,7 +15,7 @@ This Privacy Policy describes how the IMSEL VPN mobile application ("App") handl
 
 ### 2.1 Device identifier (HWID)
 
-- **What:** a device identifier — the Android ID (or a random UUID generated on the device when Android ID is unavailable; on iOS, the vendor identifier). Along with the identifier, subscription update requests include technical device headers: app version and User-Agent, device language, platform and OS version, and device model (Happ-compatible headers `x-device-locale`, `x-device-os`, `x-ver-os`, `x-device-model`).
+- **What:** a device identifier — the Android ID (or a random UUID generated on the device when Android ID is unavailable; on iOS, the vendor identifier). Along with the identifier, subscription update requests include technical device headers: app version and User-Agent, device language, platform and OS version, and device model (compatible headers `x-device-locale`, `x-device-os`, `x-ver-os`, `x-device-model`).
 - **Why:** the App sends this identifier in the `X-HWID` header with every subscription update request **to the subscription server you configured**. It is used to bind your device to your subscription service and to keep the advertising frequency counter fair (so that ad capping works per device). Device headers allow the provider to serve compatible subscription formats.
 - **Where it goes:** to your subscription server over an encrypted (HTTPS) connection. It is not linked to your name or other personal identity.
 - **On device:** the identifier is stored locally to keep it stable between app restarts.
