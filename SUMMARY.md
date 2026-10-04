@@ -13,6 +13,7 @@
 ## Техническая документация
 
 * [Управление приложением](dev-docs/app-management.md)
+* [Конфигурации JSON (Mode B)](docs/json-configurations.md)
 * [Подписка через домен-фронтинг](dev-docs/domain-fronting.md)
 
 

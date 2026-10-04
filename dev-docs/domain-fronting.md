@@ -30,7 +30,7 @@ https://cdn.imsel.dev/subpath/token#MySub?resolve-address=cdn.imsel.dev&host=bac
 
 ## Управление фронтинг-зеркалами из подписки
 
-Команды управления ([app-management.md](app-management.md)) работают с фронтинг-зеркалами через помеченные позиции: первый URL — позиция `0`, `url:1` — второй, `url:N` — позиция `N`:
+Команды управления (см. [подробнее](app-management.md)) работают с фронтинг-зеркалами через помеченные позиции: первый URL — позиция `0`, `url:1` — второй, `url:N` — позиция `N`:
 
 ```http
 new-url: https://mirror.imsel.dev/subpath/token#MySub?resolve-address=mirror.imsel.dev&host=backend.imsel-api.com
