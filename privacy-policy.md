@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last updated:** August 28, 2026
+**Last updated:** October 5, 2026
 
 This Privacy Policy describes how the IMSEL VPN mobile application ("App") handles information when you use it. The App is provided free of charge by the IMSEL VPN developer ("We", "Us", "Developer"). Contact: [imsel.vpn@gmail.com](mailto:imsel.vpn@gmail.com).
 
@@ -17,7 +17,7 @@ This Privacy Policy describes how the IMSEL VPN mobile application ("App") handl
 
 - **What:** a device identifier — the Android ID (or a random UUID generated on the device when Android ID is unavailable; on iOS, the vendor identifier). Along with the identifier, subscription update requests include technical device headers: app version and User-Agent, device language, platform and OS version, and device model (compatible headers `x-device-locale`, `x-device-os`, `x-ver-os`, `x-device-model`).
 - **Why:** the App sends this identifier in the `X-HWID` header with every subscription update request **to the subscription server you configured**. It is used to bind your device to your subscription service and to keep the advertising frequency counter fair (so that ad capping works per device). Device headers allow the provider to serve compatible subscription formats.
-- **Where it goes:** to your subscription server over an encrypted (HTTPS) connection. It is not linked to your name or other personal identity.
+- **Where it goes:** to your subscription server. Use HTTPS to protect the request; an HTTP subscription link is not encrypted. It is not linked to your name or other personal identity.
 - **On device:** the identifier is stored locally to keep it stable between app restarts.
 
 ### 2.2 Crash reports and usage statistics (Yandex AppMetrica)
@@ -35,7 +35,9 @@ This Privacy Policy describes how the IMSEL VPN mobile application ("App") handl
 
 ### 2.4 Local data
 
-Settings, server configurations, subscription links, VPN credentials (usernames/passwords/keys of your servers), routing profiles, and log files are stored **only on your device**. They are never sent to the Developer. VPN credentials are passed only to the local V2Ray/Xray core to establish your connection.
+Settings, server configurations, subscription links, VPN credentials (usernames/passwords/keys of your servers), routing profiles, and log files are stored **only on your device**. They are never sent to the Developer. Your server credentials are used to establish the connection you configured.
+
+If you approve an untrusted subscription certificate for future downloads, that approval remains on your device and applies to the approved TLS endpoint and certificate. The approval does not display the hidden subscription address or certificate. A changed endpoint or untrusted certificate requires new approval.
 
 ## 3. What We Do NOT Collect
 
@@ -47,7 +49,7 @@ Settings, server configurations, subscription links, VPN credentials (usernames/
 
 - **Camera** — used only for scanning QR codes when you add a server or subscription. The camera is never used in the background.
 - **Notifications** — used to inform you about background subscription update results.
-- **Storage access** — used to import/export configuration files and geo database files used by the V2Ray/Xray core.
+- **File selection** — used when you choose to import or export configuration files and connection data.
 
 ## 5. Data Sharing
 
@@ -61,7 +63,7 @@ We do not sell your data. Data is shared only with the processors described abov
 
 **App log file (`app.log`, stored only on your device):** the App records subscription update diagnostics — subscription names, mirror hosts, and failure reasons (HTTP status/timeout). For subscriptions marked "encrypted" by you, hosts and URLs are never written to the log; only the subscription name and the type of failure are recorded. You can view and clear this log anytime (Logs screen).
 
-All network communication uses encrypted (TLS) connections.
+HTTPS subscription links use TLS. HTTP links do not encrypt the download. Explicitly allowing an untrusted certificate weakens server identity verification and can expose subscription data to interception or alteration.
 
 ## 6. Data Retention and Deletion
 

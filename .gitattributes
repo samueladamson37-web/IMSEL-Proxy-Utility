@@ -1,0 +1,4 @@
+.githooks/* text eol=lf
+scripts/*.py text eol=lf
+tests/*.py text eol=lf
+*.yml text eol=lf

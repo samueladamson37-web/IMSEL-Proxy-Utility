@@ -1,3 +1,5 @@
 # Сборка mdBook
 public/
 book/
+.build/
+__pycache__/

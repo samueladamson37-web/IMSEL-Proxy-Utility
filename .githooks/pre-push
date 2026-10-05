@@ -1,0 +1,8 @@
+#!/bin/sh
+# Validate this repository, independent of the caller's current directory.
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+if command -v python3 >/dev/null 2>&1; then
+  exec python3 scripts/validate-docs.py
+fi
+exec python scripts/validate-docs.py

@@ -1,4 +1,4 @@
-# GitLab Pages: сборка mdBook-документации из корня репозитория.
+# GitLab Pages: сборка только проверенных публичных страниц.
 # Сайт публикуется на gitlab-docs.imsel.dev (Settings -> Pages -> New Domain).
 pages:
   stage: deploy
@@ -8,9 +8,21 @@ pages:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
   script:
-    - apk add --no-cache curl tar
+    - apk add --no-cache curl tar python3
+    - python3 scripts/validate-docs.py
+    - python3 -m unittest discover -s tests -v
     - curl -sSL "https://github.com/rust-lang/mdBook/releases/download/${MDBOOK_VERSION}/mdbook-${MDBOOK_VERSION}-x86_64-unknown-linux-musl.tar.gz" | tar -xz -C /usr/local/bin
-    - mdbook build
+    - python3 scripts/build-docs.py
   artifacts:
     paths:
       - public
+
+validate-docs:
+  stage: test
+  image: python:3.12-alpine
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_COMMIT_BRANCH != "main"'
+  script:
+    - python scripts/validate-docs.py
+    - python -m unittest discover -s tests -v

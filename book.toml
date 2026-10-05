@@ -1,7 +1,7 @@
 [book]
 title = "IMSEL Proxy Utility"
 authors = ["Samuel Adamson"]
-src = "."
+src = ".build/site-src"
 language = "ru"
 
 [build]

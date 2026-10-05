@@ -10,10 +10,10 @@
 * [Профили маршрутизации](faq/routing-profiles.md)
 * [Ошибки и решения](faq/troubleshooting.md)
 
-## Техническая документация
+## Для провайдеров подписок
 
 * [Управление приложением](dev-docs/app-management.md)
-* [Конфигурации JSON (Mode B)](docs/json-configurations.md)
+* [Готовые конфигурации серверов](docs/json-configurations.md)
 * [Подписка через домен-фронтинг](dev-docs/domain-fronting.md)
 
 
