@@ -5,6 +5,7 @@
 ## Частые вопросы (FAQ)
 
 * [Добавление подписок и серверов](faq/getting-started.md)
+* [Обновление подписок](faq/subscription-updates.md)
 * [Раздельное туннелирование (Split Tunneling)](faq/split-tunneling.md)
 * [Offline-раздача подписок](faq/subscription-sharing.md)
 * [Профили маршрутизации](faq/routing-profiles.md)

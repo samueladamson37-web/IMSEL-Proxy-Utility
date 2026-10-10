@@ -8,15 +8,27 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 LINK = re.compile(r"!?\[[^\]]*\]\(([^\s)]+)(?:\s+[^)]*)?\)")
+PRIVATE_SUFFIXES = {
+    ".dart", ".java", ".kt", ".kts", ".swift", ".c", ".cc", ".cpp",
+    ".cxx", ".h", ".hh", ".hpp", ".m", ".mm", ".cs", ".go", ".rs",
+    ".gradle", ".cmake", ".pbxproj", ".xcconfig", ".xcscheme", ".podspec",
+    ".vcxproj", ".sln", ".rc", ".entitlements", ".storyboard",
+    ".jks", ".keystore",
+}
+PRIVATE_FILENAMES = {
+    "cmakelists.txt", "pubspec.yaml", "pubspec.lock", "androidmanifest.xml",
+    "podfile", "podfile.lock", "gradlew", "gradlew.bat", "gradle.properties",
+}
 FORBIDDEN = re.compile(
     r"(?:\blib/|\bpackages/|\bbin/|\bdocs-internal/|"
-    r"[\w./-]+\.(?:dart|kt|swift|gradle)\b|"
+    r"[\w./-]+(?:" + "|".join(re.escape(suffix) for suffix in sorted(PRIVATE_SUFFIXES)) + r")\b|"
     r"\b(?:SubscriptionService|SubscriptionCommands|SubscriptionMeta|ApiService|"
     r"ReceiveHeaderConfig|SecurePrefs|WorkManager|applyMeta|applyCommands|"
-    r"overrideLinkFragment|subName|GOMEMLIMIT)\b|"
-    r"\b(?:Happ|Incy|v2rayNG|Hiddify|NekoBox)\b|"
+    r"overrideLinkFragment|subName|expireDate|GOMEMLIMIT)\b|"
+    r"\b(?:Happ|Incy|v2rayNG|v2rayN|Hiddify|NekoBox|NekoRay|Shadowrocket|Streisand|Clash)\b|"
     r"(?:изолят|парсер|миграци)[\w]*|генераци[\w]*\s+конфиг|"
-    r"архитектур[\w]*|изолированн[\w]*\s+контейнер)", re.IGNORECASE)
+    r"архитектур[\w]*|изолированн[\w]*\s+контейнер|"
+    r"нативн[\w]*\s+поддержк[\w]*\s+ядр[\w]*)", re.IGNORECASE)
 
 
 def public_pages(root):
@@ -54,7 +66,8 @@ def validate(root=ROOT):
         relative = path.relative_to(root)
         if relative.parts[0] in {".git", ".build", "public", "book", "__pycache__"}:
             continue
-        if "docs-internal" in relative.parts or path.suffix.lower() in {".dart", ".kt", ".swift", ".jks", ".keystore"}:
+        if ("docs-internal" in relative.parts or path.suffix.lower() in PRIVATE_SUFFIXES
+                or path.name.lower() in PRIVATE_FILENAMES):
             errors.append(f"Private application material in public repository: {relative.as_posix()}")
     summary = (root / "SUMMARY.md").read_text(encoding="utf-8")
     listed = [unquote(urlsplit(match).path) for match in LINK.findall(summary)]
@@ -74,7 +87,7 @@ def validate(root=ROOT):
         for number, line in enumerate(text.splitlines(), 1):
             if FORBIDDEN.search(line):
                 errors.append(f"{name}:{number}: internal implementation or forbidden client name")
-        if re.search(r"^```(?:dart|kotlin|swift|java|python|go)\b", text, re.MULTILINE):
+        if re.search(r"^```(?:dart|kotlin|swift|java|python|go|c|cpp|objective-c|csharp|rust)\b", text, re.MULTILINE):
             errors.append(f"{name}: source-code example is not public documentation")
         for target in LINK.findall(text):
             link = urlsplit(target)

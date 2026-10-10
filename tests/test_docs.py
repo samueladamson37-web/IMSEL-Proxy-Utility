@@ -41,7 +41,9 @@ class PublicationBoundaryTest(unittest.TestCase):
         self.assertTrue(validator.validate(self.root))
 
     def test_code_and_client_names_are_rejected(self):
-        for text in ("lib/main.dart", "SubscriptionService", "WorkManager", "v2rayNG", "парсер строит конфиг"):
+        for text in ("lib/main.dart", "SubscriptionService", "WorkManager", "v2rayNG",
+                     "Shadowrocket", "v2rayN", "expireDate", "нативной поддержки ядра",
+                     "парсер строит конфиг", "Main.java", "build.gradle.kts", "main.cpp"):
             (self.root / "README.md").write_text(text, encoding="utf-8")
             self.assertTrue(validator.validate(self.root), text)
 
@@ -77,8 +79,53 @@ class PublicationBoundaryTest(unittest.TestCase):
             self.assertEqual(git.call_count, 2)
 
     def test_private_source_is_rejected_even_when_not_a_page(self):
-        (self.root / "main.dart").write_text("private source", encoding="utf-8")
-        self.assertTrue(validator.validate(self.root))
+        for name in ("main.dart", "Main.java", "Main.JAVA", "Main.kt", "build.gradle",
+                     "build.gradle.kts", "App.swift", "main.c", "main.cc", "main.cpp",
+                     "main.h", "main.hpp", "App.m", "App.mm", "main.cs", "main.go",
+                     "main.rs", "generated.cmake", "project.pbxproj", "App.xcconfig",
+                     "App.xcscheme", "App.podspec", "App.vcxproj", "App.sln", "App.rc",
+                     "App.entitlements", "Main.storyboard", "release.jks", "release.keystore",
+                     "CMakeLists.txt", "pubspec.yaml", "pubspec.lock", "AndroidManifest.xml",
+                     "Podfile", "Podfile.lock", "gradlew", "gradlew.bat", "gradle.properties"):
+            with self.subTest(name=name):
+                path = self.root / "unlisted" / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text("private application material", encoding="utf-8")
+                try:
+                    self.assertIn(
+                        f"Private application material in public repository: unlisted/{name}",
+                        validator.validate(self.root),
+                    )
+                finally:
+                    path.unlink()
+
+    def test_documentation_tooling_is_allowed_but_not_published(self):
+        names = ("scripts/validate-docs.py", "scripts/check.sh", "tests/test_docs.py",
+                 ".github/workflows/pages.yml", ".gitlab-ci.yml", "book.toml")
+        for name in names:
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("documentation tooling", encoding="utf-8")
+        self.assertEqual(validator.validate(self.root), [])
+        stage = builder.prepare(self.root)
+        self.assertEqual({p.relative_to(stage).as_posix() for p in stage.rglob("*") if p.is_file()},
+                         {"README.md", "SUMMARY.md"})
+
+    def test_public_subscription_formats_are_allowed(self):
+        (self.root / "README.md").write_text(
+            "# Welcome\n```http\nsubscription-userinfo: expire=1700000000\n"
+            "routing: imsel://routing/onadd/ZXhhbXBsZQ==\n```\n"
+            '```json\n{"allowInsecure": false}\n```\n', encoding="utf-8")
+        self.assertEqual(validator.validate(self.root), [])
+
+    def test_implementation_code_blocks_are_rejected(self):
+        for language in ("dart", "kotlin", "swift", "java", "python", "go", "c", "cpp",
+                         "objective-c", "csharp", "rust"):
+            with self.subTest(language=language):
+                (self.root / "README.md").write_text(
+                    f"# Welcome\n```{language}\nimplementation\n```\n", encoding="utf-8")
+                self.assertIn("README.md: source-code example is not public documentation",
+                              validator.validate(self.root))
 
     def test_update_config_changes_need_separate_authorization(self):
         for results in (["update-config.json", ""], ["", "changed-commit"]):
